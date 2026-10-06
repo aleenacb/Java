@@ -1,0 +1,31 @@
+public class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] answer = new int[n];
+        
+        // Step 1: Calculate prefix products and store them in the answer array
+        // answer[i] will contain the product of all elements to the left of i
+        answer[0] = 1; // There are no elements to the left of the first element
+        for (int i = 1; i < n; i++) {
+            answer[i] = answer[i - 1] * nums[i - 1];
+        }
+        
+        // Step 2: Calculate suffix products on the fly and multiply with prefix products
+        int suffixProduct = 1; // Tracks the product of all elements to the right of i
+        for (int i = n - 1; i >= 0; i--) {
+            answer[i] = answer[i] * suffixProduct;
+            suffixProduct *= nums[i]; // Update the suffix product for the next element to the left
+        }
+        
+        return answer;
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        int[] nums = {1, 2, 3, 4};
+        int[] result = sol.productExceptSelf(nums);
+        
+        // Output should be: [24, 12, 8, 6]
+        System.out.println(java.util.Arrays.toString(result));
+    }
+}
